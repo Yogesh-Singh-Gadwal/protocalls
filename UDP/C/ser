@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h> 
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
+
+int main(int argc, char *argv[])
+{
+	if (argc < 2)
+	{
+		printf("Usage: %s <port_no>\n", argv[0]);
+		exit(1);
+	}
+
+	int sfd, cfd, port_no;
+	port_no = strtoul(argv[1], NULL, 10);
+	
+		/*
+	Create your Socket do error checking
+	Remember socket returns a socket descriptor
+	SOCK_STREAM --->TCP
+	or
+	SOCK_DGRAM  --->UDP
+	AF_INET ------->protocol/address family
+	*/
+	if ((sfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
+	 {
+		 perror("socket");
+		 exit(2);
+	 }
+	struct sockaddr_in serveaddr,caddr;
+
+	memset(&serveraddr, 0, sizeof(serveraddr));
+	memset(&caddr, 0, sizeof(caddr));
+
+	struct sockaddr_in saddr = {0};
+	saddr.sin_family = AF_INET;
+	saddr.sin_port = htons(port_no);
+	saddr.sin_addr.s_addr = INADDR_ANY;// Accept any ip address
+	
+	//1. Bind is used for assigning port
+	 if (bind(sfd, (struct sockaddr *)&serveaddr, sizeof(serveaddr)) < 0) 
+	{
+		perror("bind");
+		close(sfd);
+		exit(3);
+	}
+	
+
+// To make a program like ECHO
+	char buf[20] = {"nkwarsi"};
+	if (sendto(sfd,buf,strlen(buf),0,(struct sockaddr *)&caddr, sizeof(caddr)) < 0) { 
+	perror("sendto failed"); 
+	close(sfd);
+	return 1; }
+	
+	if(recvfrom(sfd, (char *)buf, sizeof(buf), 0, (struct sockaddr *)&caddr,sizeof(caddr))<0){
+	perror("recv faild");
+	close(sfd);
+	return 1;	
+	}
+
+
+	//close(cfd);	
+	close(sfd);
+
+	return 0;
+}
