@@ -1,0 +1,14 @@
+to generate key:-
+                openssl genrsa 1024 > key
+ 
+to generate certificate:-
+                        openssl req -new -x509 -nodes -sha1 -days 365 -key key > cert
+                        
+                        
+                        
+                        
+                        
+OpenSSL also provides a test SSL client/server in the style of telnet/netcat, great for debugging:
+
+openssl s_server -accept 12345 -cert cert -key key
+openssl s_client -connect localhost:12345
