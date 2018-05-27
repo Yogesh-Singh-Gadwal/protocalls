@@ -9,6 +9,7 @@ srvr_add=('localhost',22002)
 print>>sys.stderr,'connecting to %s port %s' % srvr_add
 
 sock.connect(srvr_add)
+#toSend.txt is the name of file which is going to sent
 f=open("tosend.txt","r")
 
 try:
