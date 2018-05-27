@@ -13,6 +13,7 @@ sock.bind(srvr_addr)
 
 #listening on port:
 sock.listen(1)
+#recieve .yxt is the name of the file where the recieved data is getting stored
 f=open("recieved.txt","a+")
 
 while True:
